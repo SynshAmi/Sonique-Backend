@@ -6,6 +6,7 @@ import com.synshami.sonique.config.SpotifyProperties;
 import com.synshami.sonique.dto.SpotifyTokenResponse;
 import com.synshami.sonique.exception.AuthenticationException;
 import com.synshami.sonique.exception.ResourceNotFoundException;
+import com.synshami.sonique.repository.ListeningHistoryRepository;
 import com.synshami.sonique.repository.SongRepository;
 import com.synshami.sonique.repository.SpotifyTokenRepository;
 import com.synshami.sonique.repository.UserRepository;
@@ -30,6 +31,7 @@ public class SpotifyService {
     private final UserRepository userRepository;
     private final SpotifyTokenRepository spotifyTokenRepository;
     private final SongRepository songRepository;
+    private final ListeningHistoryRepository listeningHistoryRepository;
 
     public SpotifyTokenResponse exchangeCodeForTokens(String code) {
 
@@ -209,5 +211,18 @@ public class SpotifyService {
 
                     return songRepository.save(newSong);
                 });
+    }
+
+    public void saveListeningHistory(User user,
+                                     Song song,
+                                     LocalDateTime playedAt) {
+
+        ListeningHistory history = ListeningHistory.builder()
+                .user(user)
+                .song(song)
+                .playedAt(playedAt)
+                .build();
+
+        listeningHistoryRepository.save(history);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.synshami.sonique.config.SpotifyProperties;
 import com.synshami.sonique.dto.SpotifyTokenResponse;
 import com.synshami.sonique.dto.SpotifyUserProfileResponse;
+import com.synshami.sonique.entity.Song;
 import com.synshami.sonique.entity.SpotifyToken;
 import com.synshami.sonique.entity.User;
 import com.synshami.sonique.exception.DuplicateResourceException;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/spotify")
@@ -83,6 +86,9 @@ public class SpotifyAuthController {
                 .getAuthentication()
                 .getPrincipal();
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         SpotifyToken token = spotifyTokenRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Spotify not connected"));
 
@@ -90,7 +96,33 @@ public class SpotifyAuthController {
 
         spotifyService.debugExtract(node);
 
-        return "Check console";
+        JsonNode items = node.get("items");
+
+        for (JsonNode item : items) {
+
+            JsonNode track = item.get("track");
+
+            String trackId = track.get("id").asText();
+            String trackName = track.get("name").asText();
+            String artistName = track.get("artists").get(0).get("name").asText();
+            String albumName = track.get("album").get("name").asText();
+            String playedAtStr = item.get("played_at").asText();
+
+            LocalDateTime playedAt = Instant.parse(playedAtStr)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+
+            Song song = spotifyService.getOrCreateSong(
+                    trackId,
+                    trackName,
+                    artistName,
+                    albumName
+            );
+
+            spotifyService.saveListeningHistory(user, song, playedAt);
+        }
+
+        return "Inserted a real Spotify record";
     }
 
     public record ConnectResponse(String authUrl) {}
