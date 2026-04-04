@@ -217,6 +217,13 @@ public class SpotifyService {
                                      Song song,
                                      LocalDateTime playedAt) {
 
+        boolean exists = listeningHistoryRepository
+                .existsByUserAndPlayedAt(user, playedAt);
+
+        if (exists) {
+            return;
+        }
+
         ListeningHistory history = ListeningHistory.builder()
                 .user(user)
                 .song(song)
