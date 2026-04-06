@@ -92,37 +92,9 @@ public class SpotifyAuthController {
         SpotifyToken token = spotifyTokenRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Spotify not connected"));
 
-        JsonNode node = spotifyService.getRecentlyPlayedTracks(token.getAccessToken());
+        spotifyService.ingestRecentlyPlayed(user, token.getAccessToken());
 
-        spotifyService.debugExtract(node);
-
-        JsonNode items = node.get("items");
-
-        for (JsonNode item : items) {
-
-            JsonNode track = item.get("track");
-
-            String trackId = track.get("id").asText();
-            String trackName = track.get("name").asText();
-            String artistName = track.get("artists").get(0).get("name").asText();
-            String albumName = track.get("album").get("name").asText();
-            String playedAtStr = item.get("played_at").asText();
-
-            LocalDateTime playedAt = Instant.parse(playedAtStr)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-
-            Song song = spotifyService.getOrCreateSong(
-                    trackId,
-                    trackName,
-                    artistName,
-                    albumName
-            );
-
-            spotifyService.saveListeningHistory(user, song, playedAt);
-        }
-
-        return "Inserted a real Spotify record";
+        return "DB Updated";
     }
 
     public record ConnectResponse(String authUrl) {}

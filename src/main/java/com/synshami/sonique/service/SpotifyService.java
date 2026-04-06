@@ -11,6 +11,8 @@ import com.synshami.sonique.repository.SongRepository;
 import com.synshami.sonique.repository.SpotifyTokenRepository;
 import com.synshami.sonique.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,7 +21,11 @@ import org.springframework.web.client.RestTemplate;
 import com.synshami.sonique.dto.SpotifyUserProfileResponse;
 import com.synshami.sonique.entity.*;
 import com.synshami.sonique.exception.DuplicateResourceException;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.web.client.RestClientException;
 
 @Service
@@ -32,6 +38,7 @@ public class SpotifyService {
     private final SpotifyTokenRepository spotifyTokenRepository;
     private final SongRepository songRepository;
     private final ListeningHistoryRepository listeningHistoryRepository;
+    private static final Logger logger = LoggerFactory.getLogger(SpotifyService.class);
 
     public SpotifyTokenResponse exchangeCodeForTokens(String code) {
 
@@ -172,29 +179,6 @@ public class SpotifyService {
         }
     }
 
-    public void debugExtract(JsonNode root) {
-
-        JsonNode items = root.get("items");
-
-        for (JsonNode item : items) {
-
-            JsonNode track = item.get("track");
-
-            String trackId = track.get("id").asText();
-            String trackName = track.get("name").asText();
-            String artistName = track.get("artists").get(0).get("name").asText();
-            String albumName = track.get("album").get("name").asText();
-            String playedAt = item.get("played_at").asText();
-
-            System.out.println("TrackId: " + trackId);
-            System.out.println("Name: " + trackName);
-            System.out.println("Artist: " + artistName);
-            System.out.println("Album: " + albumName);
-            System.out.println("PlayedAt: " + playedAt);
-            System.out.println("------");
-        }
-    }
-
     public Song getOrCreateSong(String spotifyId,
                                 String name,
                                 String artistName,
@@ -231,5 +215,36 @@ public class SpotifyService {
                 .build();
 
         listeningHistoryRepository.save(history);
+    }
+
+    public void ingestRecentlyPlayed(User user, String accessToken) {
+        logger.info("Ingesting for userId: {}", user.getId());
+        JsonNode node = getRecentlyPlayedTracks(accessToken);
+        JsonNode items = node.get("items");
+
+        for (JsonNode item : items) {
+
+            JsonNode track = item.get("track");
+
+            String trackId = track.get("id").asText();
+            String trackName = track.get("name").asText();
+            String artistName = track.get("artists").get(0).get("name").asText();
+            String albumName = track.get("album").get("name").asText();
+            String playedAtStr = item.get("played_at").asText();
+
+            LocalDateTime playedAt = Instant.parse(playedAtStr)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime()
+                    .withNano(0);
+
+            Song song = getOrCreateSong(
+                    trackId,
+                    trackName,
+                    artistName,
+                    albumName
+            );
+
+            saveListeningHistory(user, song, playedAt);
+        }
     }
 }
