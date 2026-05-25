@@ -76,6 +76,41 @@ public class SpotifyService {
         }
     }
 
+    public SpotifyTokenResponse refreshAccessToken(String refreshToken) {
+
+        String url = "https://accounts.spotify.com/api/token";
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("grant_type", "refresh_token");
+        formData.add("refresh_token", refreshToken);
+        formData.add("client_id", spotifyProperties.getClientId());
+        formData.add("client_secret", spotifyProperties.getClientSecret());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request =
+                new HttpEntity<>(formData, headers);
+
+        try {
+            ResponseEntity<SpotifyTokenResponse> response =
+                    restTemplate.postForEntity(
+                            url,
+                            request,
+                            SpotifyTokenResponse.class
+                    );
+
+            if (response.getBody() == null) {
+                throw new IllegalStateException("Spotify token response was empty");
+            }
+
+            return response.getBody();
+
+        } catch (RestClientException ex) {
+            throw new AuthenticationException("Spotify token exchange failed");
+        }
+    }
+
     public SpotifyUserProfileResponse getSpotifyUserProfile(String accessToken) {
 
         String url = "https://api.spotify.com/v1/me";
