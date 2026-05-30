@@ -78,24 +78,5 @@ public class SpotifyAuthController {
         return "Spotify Connected Successfully";
     }
 
-    @GetMapping("/test/recent")
-    public String testRecentlyPlayed() {
-
-        Long userId = (Long) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        SpotifyToken token = spotifyTokenRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Spotify not connected"));
-
-        spotifyService.ingestRecentlyPlayed(user, token.getAccessToken());
-
-        return "DB Updated";
-    }
-
     public record ConnectResponse(String authUrl) {}
 }
