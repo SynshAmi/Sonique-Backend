@@ -1,6 +1,7 @@
 package com.synshami.sonique.service;
 
 import com.synshami.sonique.dto.RecentTrack;
+import com.synshami.sonique.dto.TopArtist;
 import com.synshami.sonique.dto.TopSong;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
@@ -43,6 +44,13 @@ public class ListeningHistoryService {
     public List<TopSong> getTopSongs(Long userId)
     {
         Page<TopSong> page=listeningHistoryRepository.findTopSongs(userId, PageRequest.of(0, 10));
+
+        return page.getContent();
+    }
+
+    public List<TopArtist> getTopArtists(Long userId)
+    {
+        Page<TopArtist> page=listeningHistoryRepository.findTopArtists(userId, PageRequest.of(0, 5));
 
         return page.getContent();
     }
