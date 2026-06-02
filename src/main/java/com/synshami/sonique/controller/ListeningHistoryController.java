@@ -3,6 +3,7 @@ package com.synshami.sonique.controller;
 import com.synshami.sonique.dto.RecentTrack;
 import com.synshami.sonique.dto.TopArtist;
 import com.synshami.sonique.dto.TopSong;
+import com.synshami.sonique.dto.UserStats;
 import com.synshami.sonique.service.ListeningHistoryService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,16 @@ public class ListeningHistoryController {
                 .getPrincipal();
 
         return listeningHistoryService.getTopArtists(userId);
+    }
+
+    @GetMapping("/stats")
+    public UserStats stats()
+    {
+        Long userId = (Long) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        return listeningHistoryService.getUserStats(userId);
     }
 }

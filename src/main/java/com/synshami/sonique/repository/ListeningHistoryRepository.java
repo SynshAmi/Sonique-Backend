@@ -33,7 +33,23 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
         FROM ListeningHistory h JOIN h.song s
         WHERE h.user.id = :userId
         GROUP BY s.artistName
+                
         ORDER BY COUNT(h) DESC""")
     Page<TopArtist> findTopArtists(@Param("userId") Long userId, Pageable pageable);
 
+    long countByUserId(Long userId);
+
+    @Query("""
+        SELECT COUNT(DISTINCT h.song.id)
+        FROM ListeningHistory h
+        WHERE h.user.id = :userId
+        """)
+    long countUniqueSongs(@Param("userId") Long userId);
+
+    @Query("""
+        SELECT COUNT(DISTINCT s.artistName)
+        FROM ListeningHistory h JOIN h.song s
+        WHERE h.user.id = :userId
+        """)
+    long countUniqueArtists(@Param("userId") Long userId);
 }

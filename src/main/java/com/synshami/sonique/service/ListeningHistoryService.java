@@ -3,6 +3,7 @@ package com.synshami.sonique.service;
 import com.synshami.sonique.dto.RecentTrack;
 import com.synshami.sonique.dto.TopArtist;
 import com.synshami.sonique.dto.TopSong;
+import com.synshami.sonique.dto.UserStats;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
 import lombok.AllArgsConstructor;
@@ -53,5 +54,14 @@ public class ListeningHistoryService {
         Page<TopArtist> page=listeningHistoryRepository.findTopArtists(userId, PageRequest.of(0, 5));
 
         return page.getContent();
+    }
+
+    public UserStats getUserStats(Long userId)
+    {
+        long totalPlays=listeningHistoryRepository.countByUserId(userId);
+        long uniqueSongs= listeningHistoryRepository.countUniqueSongs(userId);
+        long uniqueArtists= listeningHistoryRepository.countUniqueArtists(userId);
+
+        return new UserStats(totalPlays, uniqueSongs, uniqueArtists);
     }
 }
