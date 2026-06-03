@@ -1,11 +1,7 @@
 package com.synshami.sonique.controller;
 
-import com.synshami.sonique.dto.RecentTrack;
-import com.synshami.sonique.dto.TopArtist;
-import com.synshami.sonique.dto.TopSong;
-import com.synshami.sonique.dto.UserStats;
+import com.synshami.sonique.dto.*;
 import com.synshami.sonique.service.ListeningHistoryService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/history")
 @RequiredArgsConstructor
+@RequestMapping("/history")
 public class ListeningHistoryController {
     private final ListeningHistoryService listeningHistoryService;
 

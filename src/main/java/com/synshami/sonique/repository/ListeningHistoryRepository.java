@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ListeningHistoryRepository extends JpaRepository<ListeningHistory, Long> {
     boolean existsByUserAndPlayedAt(User user, LocalDateTime playedAt);
@@ -52,4 +53,16 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
         WHERE h.user.id = :userId
         """)
     long countUniqueArtists(@Param("userId") Long userId);
+
+    @Query("""
+        SELECT h
+        FROM ListeningHistory h
+        JOIN FETCH h.song
+        WHERE h.user.id = :userId
+        ORDER BY h.playedAt DESC
+        """)
+    List<ListeningHistory> findRecentHistoryWithSongs(
+            @Param("userId") Long userId,
+            Pageable pageable
+    );
 }
