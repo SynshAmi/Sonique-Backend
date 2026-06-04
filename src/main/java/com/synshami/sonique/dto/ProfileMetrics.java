@@ -12,4 +12,5 @@ public class ProfileMetrics {
     private double explorationScore;
     private double artistDiversityScore;
     private String dominantTimeWindow;
+    private double averageTrackAge;
 }

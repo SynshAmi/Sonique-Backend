@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class ProfileService {
         List<ListeningHistory> history=listeningHistoryRepository.findRecentHistoryWithSongs(userId, PageRequest.of(0, 500));
         if(history.isEmpty())
         {
-            return new ProfileMetrics(0.0, 0.0, "Not enough data.");
+            return new ProfileMetrics(0.0, 0.0, "Not enough data.", 0.0);
         }
 
         int totalPlays=history.size();
@@ -79,6 +80,18 @@ public class ProfileService {
             max=night;
         }
 
-        return new ProfileMetrics(explorationScore, artistDiversityScore, String.valueOf(dominantTime));
+        int totalAge=0;
+        int currentYear = LocalDate.now().getYear();
+
+        for(ListeningHistory h: history)
+        {
+            totalAge+= currentYear - h.getSong().getReleaseDate().getYear();
+        }
+
+        double averageTrackAge=(double) totalAge/ history.size();
+
+        averageTrackAge=Math.round(averageTrackAge * 100.0)/ 100.0;
+
+        return new ProfileMetrics(explorationScore, artistDiversityScore, String.valueOf(dominantTime), averageTrackAge);
     }
 }

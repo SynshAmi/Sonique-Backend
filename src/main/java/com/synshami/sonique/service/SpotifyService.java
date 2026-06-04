@@ -23,6 +23,7 @@ import com.synshami.sonique.entity.*;
 import com.synshami.sonique.exception.DuplicateResourceException;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -217,7 +218,8 @@ public class SpotifyService {
     public Song getOrCreateSong(String spotifyId,
                                 String name,
                                 String artistName,
-                                String albumName) {
+                                String albumName,
+                                LocalDate releaseDate) {
 
         return songRepository.findBySpotifyId(spotifyId)
                 .orElseGet(() -> {
@@ -226,6 +228,7 @@ public class SpotifyService {
                             .name(name)
                             .artistName(artistName)
                             .albumName(albumName)
+                            .releaseDate(releaseDate)
                             .build();
 
                     return songRepository.save(newSong);
@@ -265,6 +268,9 @@ public class SpotifyService {
             String trackName = track.get("name").asText();
             String artistName = track.get("artists").get(0).get("name").asText();
             String albumName = track.get("album").get("name").asText();
+
+            LocalDate releaseDate = LocalDate.parse(track.get("album").get("release_date").asText());
+
             String playedAtStr = item.get("played_at").asText();
 
             LocalDateTime playedAt = Instant.parse(playedAtStr)
@@ -276,7 +282,8 @@ public class SpotifyService {
                     trackId,
                     trackName,
                     artistName,
-                    albumName
+                    albumName,
+                    releaseDate
             );
 
             saveListeningHistory(user, song, playedAt);
