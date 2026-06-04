@@ -2,6 +2,7 @@ package com.synshami.sonique.service;
 
 import com.synshami.sonique.dto.ProfileMetrics;
 import com.synshami.sonique.entity.ListeningHistory;
+import com.synshami.sonique.enums.TimeWindow;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ public class ProfileService {
         List<ListeningHistory> history=listeningHistoryRepository.findRecentHistoryWithSongs(userId, PageRequest.of(0, 500));
         if(history.isEmpty())
         {
-            return new ProfileMetrics(0.0, 0.0);
+            return new ProfileMetrics(0.0, 0.0, "Not enough data.");
         }
 
         int totalPlays=history.size();
@@ -48,6 +49,36 @@ public class ProfileService {
         artistDiversityScore =
                 Math.round(artistDiversityScore * 100.0) / 100.0;
 
-        return new ProfileMetrics(explorationScore, artistDiversityScore);
+        int morning=0;
+        int afternoon=0;
+        int evening=0;
+        int night=0;
+
+        for(ListeningHistory h: history)
+        {
+            int hour=h.getPlayedAt().getHour();
+            if(hour>=5 && hour<=11) morning++;
+            else if(hour>=12 && hour<=16)    afternoon++;
+            else if(hour>=17 && hour<=20)   evening++;
+            else    night++;
+        }
+
+        TimeWindow dominantTime = TimeWindow.MORNING;
+        int max=morning;
+
+        if(afternoon>max){
+            dominantTime= TimeWindow.AFTERNOON;
+            max=afternoon;
+        }
+        if(evening>max){
+            dominantTime= TimeWindow.EVENING;
+            max=evening;
+        }
+        if(night>max){
+            dominantTime= TimeWindow.NIGHT;
+            max=night;
+        }
+
+        return new ProfileMetrics(explorationScore, artistDiversityScore, String.valueOf(dominantTime));
     }
 }
