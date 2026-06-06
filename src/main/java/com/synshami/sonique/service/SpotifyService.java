@@ -217,18 +217,23 @@ public class SpotifyService {
 
     public Song getOrCreateSong(String spotifyId,
                                 String name,
+                                String primaryArtistSpotifyId,
                                 String artistName,
                                 String albumName,
-                                LocalDate releaseDate) {
+                                LocalDate releaseDate,
+                                Integer popularity
+        ) {
 
         return songRepository.findBySpotifyId(spotifyId)
                 .orElseGet(() -> {
                     Song newSong = Song.builder()
                             .spotifyId(spotifyId)
                             .name(name)
+                            .primaryArtistSpotifyId(primaryArtistSpotifyId)
                             .artistName(artistName)
                             .albumName(albumName)
                             .releaseDate(releaseDate)
+                            .popularity(popularity)
                             .build();
 
                     return songRepository.save(newSong);
@@ -267,7 +272,9 @@ public class SpotifyService {
             String trackId = track.get("id").asText();
             String trackName = track.get("name").asText();
             String artistName = track.get("artists").get(0).get("name").asText();
+            String artistId = track.get("artists").get(0).get("id").asText();
             String albumName = track.get("album").get("name").asText();
+            Integer popularity=null;
 
             LocalDate releaseDate = LocalDate.parse(track.get("album").get("release_date").asText());
 
@@ -281,9 +288,11 @@ public class SpotifyService {
             Song song = getOrCreateSong(
                     trackId,
                     trackName,
+                    artistId,
                     artistName,
                     albumName,
-                    releaseDate
+                    releaseDate,
+                    popularity
             );
 
             saveListeningHistory(user, song, playedAt);

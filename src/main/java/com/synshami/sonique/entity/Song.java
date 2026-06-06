@@ -27,6 +27,8 @@ public class Song {
     @Column(nullable = false)
     private String artistName;
 
+    private String primaryArtistSpotifyId;
+
     private String albumName;
 
     private LocalDate releaseDate;
@@ -34,6 +36,4 @@ public class Song {
     private Integer durationMs;
 
     private Integer popularity;
-
-    private Double energy;
 }
