@@ -19,22 +19,21 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
 
     @Query("""
         SELECT new com.synshami.sonique.dto.TopSong(
-            s.name, s.artistName, COUNT(h)
+            s.name, s.primaryArtist.name, COUNT(h)
         )
         FROM ListeningHistory h JOIN h.song s
         WHERE h.user.id = :userId
-        GROUP BY s.id, s.name, s.artistName
+        GROUP BY s.id, s.name, s.primaryArtist.id, s.primaryArtist.name
         ORDER BY COUNT(h) DESC""")
     Page<TopSong> findTopSongs(@Param("userId") Long userId, Pageable pageable);
 
     @Query("""
         SELECT new com.synshami.sonique.dto.TopArtist(
-            s.artistName, COUNT(h)
+            s.primaryArtist.name, COUNT(h)
         )
         FROM ListeningHistory h JOIN h.song s
         WHERE h.user.id = :userId
-        GROUP BY s.artistName
-                
+        GROUP BY s.primaryArtist.id, s.primaryArtist.name
         ORDER BY COUNT(h) DESC""")
     Page<TopArtist> findTopArtists(@Param("userId") Long userId, Pageable pageable);
 
@@ -48,7 +47,7 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     long countUniqueSongs(@Param("userId") Long userId);
 
     @Query("""
-        SELECT COUNT(DISTINCT s.artistName)
+        SELECT COUNT(DISTINCT s.primaryArtist.id)
         FROM ListeningHistory h JOIN h.song s
         WHERE h.user.id = :userId
         """)
@@ -57,7 +56,8 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     @Query("""
         SELECT h
         FROM ListeningHistory h
-        JOIN FETCH h.song
+        JOIN FETCH h.song s
+        JOIN FETCH s.primaryArtist
         WHERE h.user.id = :userId
         ORDER BY h.playedAt DESC
         """)

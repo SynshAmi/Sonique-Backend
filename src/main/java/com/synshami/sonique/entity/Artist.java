@@ -3,16 +3,17 @@ package com.synshami.sonique.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "songs")
+@Table(name = "artists")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Song {
+public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +25,16 @@ public class Song {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "artist_id")
-    private Artist primaryArtist;
-
-    private String albumName;
-
-    private LocalDate releaseDate;
-
-    private Integer durationMs;
+    @ElementCollection
+    @CollectionTable(
+            name = "artist_raw_genres",
+            joinColumns = @JoinColumn(name = "artist_id")
+    )
+    @Column(name = "genre")
+    private Set<String> rawGenres;
 
     private Integer popularity;
+
+    @Column(nullable = false)
+    private LocalDateTime lastUpdated;
 }

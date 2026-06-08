@@ -30,7 +30,7 @@ public class ListeningHistoryService {
         for(ListeningHistory history : histories)
         {
             RecentTrack track=new RecentTrack(history.getSong().getName(),
-                    history.getSong().getArtistName(),
+                    history.getSong().getPrimaryArtist().getName(),
                     history.getSong().getAlbumName(),
                     history.getPlayedAt());
 

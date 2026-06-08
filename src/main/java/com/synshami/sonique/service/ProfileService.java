@@ -36,7 +36,7 @@ public class ProfileService {
         for(ListeningHistory h : history)
         {
             uniqueSongs.add(h.getSong().getId());
-            uniqueArtists.add(h.getSong().getArtistName());
+            uniqueArtists.add(h.getSong().getPrimaryArtist().getName());
         }
 
         int uniqueSongsNo=uniqueSongs.size();

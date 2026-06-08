@@ -6,10 +6,7 @@ import com.synshami.sonique.config.SpotifyProperties;
 import com.synshami.sonique.dto.SpotifyTokenResponse;
 import com.synshami.sonique.exception.AuthenticationException;
 import com.synshami.sonique.exception.ResourceNotFoundException;
-import com.synshami.sonique.repository.ListeningHistoryRepository;
-import com.synshami.sonique.repository.SongRepository;
-import com.synshami.sonique.repository.SpotifyTokenRepository;
-import com.synshami.sonique.repository.UserRepository;
+import com.synshami.sonique.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +23,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
 
 import org.springframework.web.client.RestClientException;
 
@@ -38,6 +36,7 @@ public class SpotifyService {
     private final UserRepository userRepository;
     private final SpotifyTokenRepository spotifyTokenRepository;
     private final SongRepository songRepository;
+    private final ArtistRepository artistRepository;
     private final ListeningHistoryRepository listeningHistoryRepository;
     private static final Logger logger = LoggerFactory.getLogger(SpotifyService.class);
 
@@ -217,8 +216,7 @@ public class SpotifyService {
 
     public Song getOrCreateSong(String spotifyId,
                                 String name,
-                                String primaryArtistSpotifyId,
-                                String artistName,
+                                Artist artist,
                                 String albumName,
                                 LocalDate releaseDate,
                                 Integer popularity
@@ -229,8 +227,7 @@ public class SpotifyService {
                     Song newSong = Song.builder()
                             .spotifyId(spotifyId)
                             .name(name)
-                            .primaryArtistSpotifyId(primaryArtistSpotifyId)
-                            .artistName(artistName)
+                            .primaryArtist(artist)
                             .albumName(albumName)
                             .releaseDate(releaseDate)
                             .popularity(popularity)
@@ -285,11 +282,12 @@ public class SpotifyService {
                     .toLocalDateTime()
                     .withNano(0);
 
+            Artist artist = getOrCreateArtist(artistId, artistName);
+
             Song song = getOrCreateSong(
                     trackId,
                     trackName,
-                    artistId,
-                    artistName,
+                    artist,
                     albumName,
                     releaseDate,
                     popularity
@@ -297,5 +295,19 @@ public class SpotifyService {
 
             saveListeningHistory(user, song, playedAt);
         }
+    }
+
+    public Artist getOrCreateArtist(String spotifyId, String name){
+        return artistRepository.findBySpotifyId(spotifyId).orElseGet(() -> {
+            Artist artist = Artist.builder()
+                    .spotifyId(spotifyId)
+                    .name(name)
+                    .rawGenres(new HashSet<>())
+                    .popularity(null)
+                    .lastUpdated(LocalDateTime.now())
+                    .build();
+
+            return artistRepository.save(artist);
+        });
     }
 }
