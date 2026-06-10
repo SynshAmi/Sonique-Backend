@@ -15,4 +15,6 @@ public interface SpotifyTokenRepository extends JpaRepository<SpotifyToken, Long
     List<SpotifyToken> findAll();
 
     boolean existsBySpotifyUserId(String spotifyUserId);
+
+    Optional<SpotifyToken> findTopByOrderByIdAsc();
 }

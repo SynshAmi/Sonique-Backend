@@ -22,9 +22,9 @@ public class SpotifySyncScheduler {
     private final SpotifyTokenRepository spotifyTokenRepository;
     private static final Logger logger = LoggerFactory.getLogger(SpotifySyncScheduler.class);
 
-    @Scheduled(fixedRate = 15000)
+    //@Scheduled(fixedRate = 15000)
     public void syncUsers() {
-        logger.info("Scheduler triggered");
+        logger.info("[SpotifySyncScheduler] Scheduler triggered");
 
         List<SpotifyToken> tokens = spotifyTokenRepository.findAll();
 
@@ -34,7 +34,7 @@ public class SpotifySyncScheduler {
 
                 if(token.getExpiresAt().isBefore(LocalDateTime.now())) {
 
-                    logger.info("Token expired for user {}", user.getId());
+                    logger.info("[SpotifySyncScheduler] Token expired for user {}", user.getId());
 
                     SpotifyTokenResponse refreshed =
                             spotifyService.refreshAccessToken(token.getRefreshToken());
@@ -49,11 +49,11 @@ public class SpotifySyncScheduler {
                     spotifyTokenRepository.save(token);
                 }
 
-                logger.info("Syncing user {}", user.getId());
+                logger.info("[SpotifySyncScheduler] Syncing user {}", user.getId());
                 spotifyService.ingestRecentlyPlayed(user, token.getAccessToken());
             }
             catch(Exception e){
-                logger.error("Failed for userId: {}", token.getUser().getId(), e);
+                logger.error("[SpotifySyncScheduler] Failed for userId: {}", token.getUser().getId(), e);
             }
         }
     }

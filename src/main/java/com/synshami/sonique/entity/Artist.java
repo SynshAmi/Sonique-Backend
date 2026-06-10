@@ -35,6 +35,5 @@ public class Artist {
 
     private Integer popularity;
 
-    @Column(nullable = false)
     private LocalDateTime lastUpdated;
 }
