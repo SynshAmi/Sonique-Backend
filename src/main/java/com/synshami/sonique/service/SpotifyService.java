@@ -220,8 +220,7 @@ public class SpotifyService {
                                 String name,
                                 Artist artist,
                                 String albumName,
-                                LocalDate releaseDate,
-                                Integer popularity
+                                LocalDate releaseDate
         ) {
 
         return songRepository.findBySpotifyId(spotifyId)
@@ -232,7 +231,6 @@ public class SpotifyService {
                             .primaryArtist(artist)
                             .albumName(albumName)
                             .releaseDate(releaseDate)
-                            .popularity(popularity)
                             .build();
 
                     return songRepository.save(newSong);
@@ -273,7 +271,6 @@ public class SpotifyService {
             String artistName = track.get("artists").get(0).get("name").asText();
             String artistId = track.get("artists").get(0).get("id").asText();
             String albumName = track.get("album").get("name").asText();
-            Integer popularity=null;
 
             LocalDate releaseDate = LocalDate.parse(track.get("album").get("release_date").asText());
 
@@ -291,8 +288,7 @@ public class SpotifyService {
                     trackName,
                     artist,
                     albumName,
-                    releaseDate,
-                    popularity
+                    releaseDate
             );
 
             saveListeningHistory(user, song, playedAt);
@@ -304,70 +300,10 @@ public class SpotifyService {
             Artist artist = Artist.builder()
                     .spotifyId(spotifyId)
                     .name(name)
-                    .rawGenres(new HashSet<>())
-                    .popularity(null)
                     .lastUpdated(null)
                     .build();
 
             return artistRepository.save(artist);
         });
     }
-
-    /*public JsonNode getArtistDetails(String artistId, String accessToken)
-    {
-        String url="https://api.spotify.com/v1/artists/"+artistId;
-
-        HttpHeaders headers=new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-
-        HttpEntity<Void> request=new HttpEntity<>(headers);
-
-        try{
-            ResponseEntity<String> response=restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    String.class
-            );
-
-            if(response.getBody()==null)
-            {
-                throw new IllegalStateException("Artist details response was empty");
-            }
-
-            ObjectMapper objectMapper=new ObjectMapper();
-            return objectMapper.readTree(response.getBody());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch artist details");
-        }
-
-    }
-
-    public void enrichArtist(Artist artist)
-    {
-        logger.info("[ArtistEnrichment] Enriching artist {}", artist.getName());
-
-        SpotifyToken token=spotifyTokenRepository.findTopByOrderByIdAsc().orElse(null);
-        if(token == null) return;
-
-        String accessToken=token.getAccessToken();
-
-        JsonNode node=getArtistDetails(artist.getSpotifyId(), accessToken);
-
-        Integer popularity=node.get("popularity").asInt();
-
-        JsonNode genresNode=node.get("genres");
-
-        Set<String> genres=new HashSet<>();
-        for(JsonNode genreNode : genresNode)
-        {
-            genres.add(genreNode.asText());
-        }
-
-        artist.setPopularity(popularity);
-        artist.setRawGenres(genres);
-        artist.setLastUpdated(LocalDateTime.now());
-
-        artistRepository.save(artist);
-    }*/
 }

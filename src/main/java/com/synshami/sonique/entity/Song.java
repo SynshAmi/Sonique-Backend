@@ -33,6 +33,4 @@ public class Song {
     private LocalDate releaseDate;
 
     private Integer durationMs;
-
-    private Integer popularity;
 }

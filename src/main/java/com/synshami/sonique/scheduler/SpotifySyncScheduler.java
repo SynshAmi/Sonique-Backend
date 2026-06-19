@@ -22,7 +22,7 @@ public class SpotifySyncScheduler {
     private final SpotifyTokenRepository spotifyTokenRepository;
     private static final Logger logger = LoggerFactory.getLogger(SpotifySyncScheduler.class);
 
-    //@Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = 15000)
     public void syncUsers() {
         logger.info("[SpotifySyncScheduler] Scheduler triggered");
 

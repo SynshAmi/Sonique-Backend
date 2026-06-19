@@ -1,44 +1,38 @@
-/*package com.synshami.sonique.scheduler;
+package com.synshami.sonique.scheduler;
 
-import com.synshami.sonique.entity.Artist;
-import com.synshami.sonique.repository.ArtistRepository;
-import com.synshami.sonique.service.SpotifyService;
+import com.synshami.sonique.service.ArtistEnrichmentService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class ArtistEnrichmentScheduler {
 
-    private final SpotifyService spotifyService;
-    private final ArtistRepository artistRepository;
-    private static final Logger logger = LoggerFactory.getLogger(ArtistEnrichmentScheduler.class);
+    private final ArtistEnrichmentService artistEnrichmentService;
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(ArtistEnrichmentScheduler.class);
 
     @Scheduled(fixedRate = 15000)
-    public void enrichArtists()
-    {
-        logger.info("[ArtistEnrichmentScheduler] Scheduler triggered");
-        List<Artist> artists=artistRepository.findTop100ByLastUpdatedIsNullOrderByIdAsc();
+    public void enrichArtists() {
 
-        for(Artist artist : artists)
-        {
-            try
-            {
-                spotifyService.enrichArtist(artist);
-            }
-            catch(Exception e)
-            {
-                logger.error("Failed enrichment for {} with artist id {} and spotify id {}",
-                        artist.getName(),
-                        artist.getId(),
-                        artist.getSpotifyId(),
-                        e);
-            }
+        logger.info("[ArtistEnrichmentScheduler] Scheduler triggered");
+
+        try {
+
+            artistEnrichmentService.enrichPendingArtists();
+
+        }
+        catch (Exception e) {
+
+            logger.error(
+                    "[ArtistEnrichmentScheduler] Failed to enrich artists",
+                    e
+            );
+
         }
     }
-}*/
+}

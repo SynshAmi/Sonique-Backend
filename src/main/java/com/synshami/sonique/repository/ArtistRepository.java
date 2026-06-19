@@ -1,7 +1,6 @@
 package com.synshami.sonique.repository;
 
 import com.synshami.sonique.entity.Artist;
-import com.synshami.sonique.entity.SpotifyToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
