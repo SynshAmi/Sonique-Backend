@@ -1,11 +1,14 @@
 package com.synshami.sonique.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.synshami.sonique.config.SpotifyProperties;
 import com.synshami.sonique.dto.SpotifyTokenResponse;
+import com.synshami.sonique.enums.SpotifyConnectionStatus;
 import com.synshami.sonique.exception.AuthenticationException;
 import com.synshami.sonique.exception.ResourceNotFoundException;
+import com.synshami.sonique.exception.SpotifyReauthorizationRequiredException;
 import com.synshami.sonique.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import com.synshami.sonique.dto.SpotifyUserProfileResponse;
 import com.synshami.sonique.entity.*;
@@ -108,7 +112,24 @@ public class SpotifyService {
 
             return response.getBody();
 
-        } catch (RestClientException ex) {
+        } catch(HttpClientErrorException ex) {
+            try{
+                String responseBody = ex.getResponseBodyAsString();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode errorNode=objectMapper.readTree(responseBody);
+                String error=errorNode.path("error").asText();
+
+                if("invalid_grant".equals(error)) {
+                    throw new SpotifyReauthorizationRequiredException("Spotify refresh token is invalid or expired");
+                }
+
+            }   catch(JsonProcessingException ignored) {
+
+            }
+
+            throw new AuthenticationException("Spotify token refresh failed");
+        }
+        catch (RestClientException ex) {
             throw new AuthenticationException("Spotify token exchange failed");
         }
     }
@@ -170,6 +191,7 @@ public class SpotifyService {
             existingToken.setAccessToken(tokenResponse.getAccessToken());
             existingToken.setRefreshToken(tokenResponse.getRefreshToken());
             existingToken.setExpiresAt(expiresAt);
+            existingToken.setConnectionStatus(SpotifyConnectionStatus.CONNECTED);
 
             spotifyTokenRepository.save(existingToken);
 
@@ -180,6 +202,7 @@ public class SpotifyService {
                     .accessToken(tokenResponse.getAccessToken())
                     .refreshToken(tokenResponse.getRefreshToken())
                     .expiresAt(expiresAt)
+                    .connectionStatus(SpotifyConnectionStatus.CONNECTED)
                     .build();
 
             spotifyTokenRepository.save(newToken);

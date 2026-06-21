@@ -1,5 +1,6 @@
 package com.synshami.sonique.entity;
 
+import com.synshami.sonique.enums.SpotifyConnectionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,8 @@ public class SpotifyToken {
 
     @Column(nullable = false)
     private LocalDateTime expiresAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SpotifyConnectionStatus connectionStatus;
 }

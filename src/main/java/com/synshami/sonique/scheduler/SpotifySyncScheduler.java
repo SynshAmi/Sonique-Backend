@@ -3,6 +3,8 @@ package com.synshami.sonique.scheduler;
 import com.synshami.sonique.dto.SpotifyTokenResponse;
 import com.synshami.sonique.entity.SpotifyToken;
 import com.synshami.sonique.entity.User;
+import com.synshami.sonique.enums.SpotifyConnectionStatus;
+import com.synshami.sonique.exception.SpotifyReauthorizationRequiredException;
 import com.synshami.sonique.repository.SpotifyTokenRepository;
 import com.synshami.sonique.service.SpotifyService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class SpotifySyncScheduler {
     public void syncUsers() {
         logger.info("[SpotifySyncScheduler] Scheduler triggered");
 
-        List<SpotifyToken> tokens = spotifyTokenRepository.findAll();
+        List<SpotifyToken> tokens = spotifyTokenRepository.findAllByConnectionStatus(SpotifyConnectionStatus.CONNECTED);
 
         for(SpotifyToken token : tokens) {
             try{
@@ -51,6 +53,12 @@ public class SpotifySyncScheduler {
 
                 logger.info("[SpotifySyncScheduler] Syncing user {}", user.getId());
                 spotifyService.ingestRecentlyPlayed(user, token.getAccessToken());
+            }
+            catch(SpotifyReauthorizationRequiredException e)
+            {
+                logger.info("[SpotifySyncScheduler] Reauthorization required for userId: {}", token.getUser().getId(), e);
+                token.setConnectionStatus(SpotifyConnectionStatus.REAUTHORIZATION_REQUIRED);
+                spotifyTokenRepository.save(token);
             }
             catch(Exception e){
                 logger.error("[SpotifySyncScheduler] Failed for userId: {}", token.getUser().getId(), e);
