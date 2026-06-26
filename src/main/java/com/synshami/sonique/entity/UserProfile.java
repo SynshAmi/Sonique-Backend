@@ -1,5 +1,6 @@
 package com.synshami.sonique.entity;
 
+import com.synshami.sonique.enums.TimeWindow;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,24 +23,34 @@ public class UserProfile {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Personality Vector
-    private Double eraScore;
-    private Double energyScore;
+    // ==========================
+    // Lifetime Statistics
+    // ==========================
+
+    private Integer totalTracks;
+    private Integer uniqueTracks;
+    private Integer uniqueArtists;
+    private Double totalListeningHours;
+
+    // ==========================
+    // Current Personality
+    // Listening Style
+    // ==========================
+
     private Double explorationScore;
-    private Double genreDiversityScore;
-    private Double timeBiasScore;
+    private Double artistDiversityScore;
+    private Double averageTrackAge;
 
-    // Readable identity
-    private String dominantGenre;
-    private String dominantTimeWindow;
-    private String listenerType;
+    @Enumerated(EnumType.STRING)
+    private TimeWindow dominantTimeWindow;
 
-    // Stats
+    // ==========================
+    // Current Personality
+    // Taste
+    // ==========================
+
     private String topArtistName;
     private String topSongName;
-    private String mostUniqueRecentSongName;
-    private Integer mostUniqueRecentSongPopularity;
-    private Integer totalTracksAnalyzed;
 
     private LocalDateTime lastUpdated;
 }

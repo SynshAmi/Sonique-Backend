@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ProfileMetrics {
+public class ListeningStyleResponse {
 
     private double explorationScore;
     private double artistDiversityScore;

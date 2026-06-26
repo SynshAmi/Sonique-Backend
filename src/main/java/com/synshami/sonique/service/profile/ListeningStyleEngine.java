@@ -1,6 +1,6 @@
-package com.synshami.sonique.service;
+package com.synshami.sonique.service.profile;
 
-import com.synshami.sonique.dto.ProfileMetrics;
+import com.synshami.sonique.dto.ListeningStyleResponse;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.enums.TimeWindow;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
@@ -15,17 +15,17 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileService {
+public class ListeningStyleEngine {
 
     private final ListeningHistoryRepository listeningHistoryRepository;
 
-    public ProfileMetrics getProfileMetrics(Long userId)
+    public ListeningStyleResponse getListeningStyle(Long userId)
     {
 
         List<ListeningHistory> history=listeningHistoryRepository.findRecentHistoryWithSongs(userId, PageRequest.of(0, 500));
         if(history.isEmpty())
         {
-            return new ProfileMetrics(0.0, 0.0, "Not enough data.", 0.0);
+            return new ListeningStyleResponse(0.0, 0.0, "Not enough data.", 0.0);
         }
 
         int totalPlays=history.size();
@@ -92,6 +92,6 @@ public class ProfileService {
 
         averageTrackAge=Math.round(averageTrackAge * 100.0)/ 100.0;
 
-        return new ProfileMetrics(explorationScore, artistDiversityScore, String.valueOf(dominantTime), averageTrackAge);
+        return new ListeningStyleResponse(explorationScore, artistDiversityScore, String.valueOf(dominantTime), averageTrackAge);
     }
 }
