@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +32,10 @@ public class Artist {
     private Long listenerCount;
 
     private Long playCount;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "artist")
+    private List<ArtistTag> artistTags = new ArrayList<>();
 
     private LocalDateTime lastUpdated;
 }

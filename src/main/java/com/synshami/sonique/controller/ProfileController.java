@@ -4,11 +4,14 @@ import com.synshami.sonique.dto.ListeningStyleResponse;
 import com.synshami.sonique.dto.TasteEngineResponse;
 import com.synshami.sonique.service.profile.ListeningStyleEngine;
 import com.synshami.sonique.service.profile.TasteEngine;
+import com.synshami.sonique.service.profile.UserTagPreferenceEngine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
     private final ListeningStyleEngine listeningStyleEngine;
     private final TasteEngine tasteEngine;
+    private final UserTagPreferenceEngine userTagPreferenceEngine;
 
     @GetMapping("/metrics")
     public ListeningStyleResponse metrics()

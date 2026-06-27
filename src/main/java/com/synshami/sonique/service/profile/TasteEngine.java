@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,26 +16,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TasteEngine {
     private final ListeningHistoryRepository listeningHistoryRepository;
+    private final ListeningAnalysisService listeningAnalysisService;
 
     public TasteEngineResponse getTasteMetrics(Long userId) {
         List<ListeningHistory> history=listeningHistoryRepository.findRecentHistoryWithSongs(userId, PageRequest.of(0, 100));
 
-        Map<Artist, Integer> artistCounts = new HashMap<>();
-        Map<Song, Integer> songCounts = new HashMap<>();
-        for (ListeningHistory entry : history) {
-
-            Artist artist = entry.getSong().getPrimaryArtist();
-            Song song = entry.getSong();
-
-            artistCounts.put(
-                    artist,
-                    artistCounts.getOrDefault(artist, 0) + 1
-            );
-            songCounts.put(
-                    song,
-                    songCounts.getOrDefault(song, 0) + 1
-            );
-        }
+        Map<Artist, Integer> artistCounts = listeningAnalysisService.getArtistFrequencyMap(history);
+        Map<Song, Integer> songCounts = listeningAnalysisService.getSongFrequencyMap(history);
 
         Artist topArtist=null;
         int maxArtistPlays=-1;

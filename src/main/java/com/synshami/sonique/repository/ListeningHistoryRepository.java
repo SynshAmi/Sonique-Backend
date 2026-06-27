@@ -65,4 +65,44 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
             @Param("userId") Long userId,
             Pageable pageable
     );
+
+    /*@Query("""
+    SELECT h
+    FROM ListeningHistory h
+    JOIN FETCH h.song s
+    JOIN FETCH s.primaryArtist
+    LEFT JOIN FETCH s.primaryArtist.artistTags at
+    LEFT JOIN FETCH at.tag
+    WHERE h.user.id = :userId
+    ORDER BY h.playedAt DESC
+    """)
+    List<ListeningHistory> findRecentHistoryWithArtistTags(
+            @Param("userId") Long userId,
+            Pageable pageable
+    );*/
+
+    @Query("""
+    SELECT h.id
+    FROM ListeningHistory h
+    WHERE h.user.id = :userId
+    ORDER BY h.playedAt DESC
+    """)
+    List<Long> findRecentHistoryIdsByUserId(
+            @Param("userId") Long userId,
+            Pageable pageable
+    );
+
+    @Query("""
+    SELECT DISTINCT h
+    FROM ListeningHistory h
+    JOIN FETCH h.song s
+    JOIN FETCH s.primaryArtist a
+    LEFT JOIN FETCH a.artistTags at
+    LEFT JOIN FETCH at.tag
+    WHERE h.id IN :ids
+    ORDER BY h.playedAt DESC
+    """)
+    List<ListeningHistory> findHistoryWithArtistTagsByIds(
+            @Param("ids") List<Long> ids
+    );
 }
