@@ -11,4 +11,5 @@ public class UserStats {
     private long totalPlays;
     private long uniqueSongs;
     private long uniqueArtists;
+    private double totalListeningHours;
 }

@@ -1,10 +1,7 @@
 package com.synshami.sonique.controller;
 
-import com.synshami.sonique.dto.ListeningStyleResponse;
-import com.synshami.sonique.dto.TasteEngineResponse;
-import com.synshami.sonique.service.profile.ListeningStyleEngine;
-import com.synshami.sonique.service.profile.TasteEngine;
-import com.synshami.sonique.service.profile.UserTagPreferenceEngine;
+import com.synshami.sonique.dto.UserProfileResponse;
+import com.synshami.sonique.service.profile.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,27 +14,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/profile")
 public class ProfileController {
-    private final ListeningStyleEngine listeningStyleEngine;
-    private final TasteEngine tasteEngine;
-    private final UserTagPreferenceEngine userTagPreferenceEngine;
+    private final UserProfileService userProfileService;
 
-    @GetMapping("/metrics")
-    public ListeningStyleResponse metrics()
-    {
+    @GetMapping
+    public UserProfileResponse getProfile() {
+
         Long userId = (Long) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
 
-        return listeningStyleEngine.getListeningStyle(userId);
-    }
-
-    @GetMapping("/taste")
-    public TasteEngineResponse taste() {
-        Long userId = (Long) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        return tasteEngine.getTasteMetrics(userId);
+        return userProfileService.getUserProfile(userId);
     }
 }

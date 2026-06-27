@@ -7,6 +7,7 @@ import com.synshami.sonique.enums.SpotifyConnectionStatus;
 import com.synshami.sonique.exception.SpotifyReauthorizationRequiredException;
 import com.synshami.sonique.repository.SpotifyTokenRepository;
 import com.synshami.sonique.service.SpotifyService;
+import com.synshami.sonique.service.profile.IdentityGenerationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class SpotifySyncScheduler {
 
     private final SpotifyService spotifyService;
     private final SpotifyTokenRepository spotifyTokenRepository;
+    private final IdentityGenerationService identityGenerationService;
     private static final Logger logger = LoggerFactory.getLogger(SpotifySyncScheduler.class);
 
     @Scheduled(fixedRate = 15000)
@@ -53,6 +55,7 @@ public class SpotifySyncScheduler {
 
                 logger.info("[SpotifySyncScheduler] Syncing user {}", user.getId());
                 spotifyService.ingestRecentlyPlayed(user, token.getAccessToken());
+                identityGenerationService.generate(user.getId());
             }
             catch(SpotifyReauthorizationRequiredException e)
             {

@@ -243,7 +243,8 @@ public class SpotifyService {
                                 String name,
                                 Artist artist,
                                 String albumName,
-                                LocalDate releaseDate
+                                LocalDate releaseDate,
+                                Integer durationMs
         ) {
 
         return songRepository.findBySpotifyId(spotifyId)
@@ -254,6 +255,7 @@ public class SpotifyService {
                             .primaryArtist(artist)
                             .albumName(albumName)
                             .releaseDate(releaseDate)
+                            .durationMs(durationMs)
                             .build();
 
                     return songRepository.save(newSong);
@@ -297,6 +299,8 @@ public class SpotifyService {
 
             LocalDate releaseDate = LocalDate.parse(track.get("album").get("release_date").asText());
 
+            Integer durationMs = track.get("duration_ms").asInt();
+
             String playedAtStr = item.get("played_at").asText();
 
             LocalDateTime playedAt = Instant.parse(playedAtStr)
@@ -311,7 +315,8 @@ public class SpotifyService {
                     trackName,
                     artist,
                     albumName,
-                    releaseDate
+                    releaseDate,
+                    durationMs
             );
 
             saveListeningHistory(user, song, playedAt);

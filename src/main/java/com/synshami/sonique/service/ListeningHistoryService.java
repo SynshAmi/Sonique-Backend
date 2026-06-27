@@ -59,7 +59,9 @@ public class ListeningHistoryService {
         long totalPlays=listeningHistoryRepository.countByUserId(userId);
         long uniqueSongs= listeningHistoryRepository.countUniqueSongs(userId);
         long uniqueArtists= listeningHistoryRepository.countUniqueArtists(userId);
+        long totalListeningDurationMs= listeningHistoryRepository.getTotalListeningDuration(userId);
+        double totalListeningHours= Math.round((double) totalListeningDurationMs / (1000 * 60 * 60) * 100.0) / 100.0;
 
-        return new UserStats(totalPlays, uniqueSongs, uniqueArtists);
+        return new UserStats(totalPlays, uniqueSongs, uniqueArtists, totalListeningHours);
     }
 }

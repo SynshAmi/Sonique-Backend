@@ -105,4 +105,12 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     List<ListeningHistory> findHistoryWithArtistTagsByIds(
             @Param("ids") List<Long> ids
     );
+
+    @Query("""
+    SELECT COALESCE(SUM(s.durationMs), 0)
+    FROM ListeningHistory lh
+    JOIN lh.song s
+    WHERE lh.user.id = :userId
+    """)
+    Long getTotalListeningDuration(@Param("userId") Long userId);
 }
