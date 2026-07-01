@@ -1,8 +1,8 @@
 package com.synshami.sonique.service.profile;
 
-import com.synshami.sonique.dto.ListeningStyleResponse;
-import com.synshami.sonique.dto.TasteEngineResponse;
-import com.synshami.sonique.dto.UserStats;
+import com.synshami.sonique.dto.profile.ListeningStyleResponse;
+import com.synshami.sonique.dto.profile.TasteEngineResponse;
+import com.synshami.sonique.dto.profile.UserStats;
 import com.synshami.sonique.entity.User;
 import com.synshami.sonique.entity.UserProfile;
 import com.synshami.sonique.enums.TimeWindow;

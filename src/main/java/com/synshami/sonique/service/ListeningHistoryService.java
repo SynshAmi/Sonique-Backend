@@ -1,6 +1,9 @@
 package com.synshami.sonique.service;
 
-import com.synshami.sonique.dto.*;
+import com.synshami.sonique.dto.profile.TopArtist;
+import com.synshami.sonique.dto.profile.TopSong;
+import com.synshami.sonique.dto.profile.UserStats;
+import com.synshami.sonique.dto.spotify.RecentTrack;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

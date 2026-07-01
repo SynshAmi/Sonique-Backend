@@ -1,13 +1,6 @@
 package com.synshami.sonique.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.synshami.sonique.config.SpotifyProperties;
-import com.synshami.sonique.dto.SpotifyTokenResponse;
-import com.synshami.sonique.dto.SpotifyUserProfileResponse;
-import com.synshami.sonique.entity.Song;
-import com.synshami.sonique.entity.SpotifyToken;
-import com.synshami.sonique.entity.User;
-import com.synshami.sonique.exception.DuplicateResourceException;
 import com.synshami.sonique.repository.SpotifyTokenRepository;
 import com.synshami.sonique.repository.UserRepository;
 import com.synshami.sonique.service.OAuthStateService;
@@ -19,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/spotify")

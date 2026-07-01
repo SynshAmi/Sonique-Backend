@@ -1,6 +1,6 @@
 package com.synshami.sonique.service.profile;
 
-import com.synshami.sonique.dto.ListeningStyleResponse;
+import com.synshami.sonique.dto.profile.ListeningStyleResponse;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.enums.TimeWindow;
 import com.synshami.sonique.repository.ListeningHistoryRepository;

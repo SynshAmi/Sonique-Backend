@@ -1,4 +1,4 @@
-package com.synshami.sonique.dto;
+package com.synshami.sonique.dto.auth;
 
 import lombok.*;
 

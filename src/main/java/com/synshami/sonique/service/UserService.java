@@ -1,6 +1,6 @@
 package com.synshami.sonique.service;
 
-import com.synshami.sonique.dto.RegisterResponse;
+import com.synshami.sonique.dto.auth.RegisterResponse;
 import com.synshami.sonique.entity.User;
 import com.synshami.sonique.exception.AuthenticationException;
 import com.synshami.sonique.exception.DuplicateResourceException;
@@ -8,7 +8,7 @@ import com.synshami.sonique.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.synshami.sonique.dto.LoginResponse;
+import com.synshami.sonique.dto.auth.LoginResponse;
 import com.synshami.sonique.security.JwtService;
 
 import java.time.LocalDateTime;

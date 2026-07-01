@@ -1,14 +1,13 @@
 package com.synshami.sonique.controller;
 
-import com.synshami.sonique.dto.RegisterRequest;
-import com.synshami.sonique.dto.RegisterResponse;
+import com.synshami.sonique.dto.auth.RegisterRequest;
+import com.synshami.sonique.dto.auth.RegisterResponse;
 import com.synshami.sonique.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import com.synshami.sonique.dto.LoginRequest;
-import com.synshami.sonique.dto.LoginResponse;
-import jakarta.validation.Valid;
+import com.synshami.sonique.dto.auth.LoginRequest;
+import com.synshami.sonique.dto.auth.LoginResponse;
 
 @RestController
 @RequestMapping("/auth")

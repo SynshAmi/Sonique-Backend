@@ -1,4 +1,4 @@
-package com.synshami.sonique.dto;
+package com.synshami.sonique.dto.spotify;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

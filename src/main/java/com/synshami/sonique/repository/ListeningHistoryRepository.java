@@ -1,6 +1,6 @@
 package com.synshami.sonique.repository;
-import com.synshami.sonique.dto.TopArtist;
-import com.synshami.sonique.dto.TopSong;
+import com.synshami.sonique.dto.profile.TopArtist;
+import com.synshami.sonique.dto.profile.TopSong;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.entity.User;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     Page<ListeningHistory> findByUserIdOrderByPlayedAtDesc(Long userId, Pageable pageable);
 
     @Query("""
-        SELECT new com.synshami.sonique.dto.TopSong(
+        SELECT new com.synshami.sonique.dto.profile.TopSong(
             s.name, s.primaryArtist.name, COUNT(h)
         )
         FROM ListeningHistory h JOIN h.song s
@@ -28,7 +28,7 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
     Page<TopSong> findTopSongs(@Param("userId") Long userId, Pageable pageable);
 
     @Query("""
-        SELECT new com.synshami.sonique.dto.TopArtist(
+        SELECT new com.synshami.sonique.dto.profile.TopArtist(
             s.primaryArtist.name, COUNT(h)
         )
         FROM ListeningHistory h JOIN h.song s
@@ -65,21 +65,6 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
             @Param("userId") Long userId,
             Pageable pageable
     );
-
-    /*@Query("""
-    SELECT h
-    FROM ListeningHistory h
-    JOIN FETCH h.song s
-    JOIN FETCH s.primaryArtist
-    LEFT JOIN FETCH s.primaryArtist.artistTags at
-    LEFT JOIN FETCH at.tag
-    WHERE h.user.id = :userId
-    ORDER BY h.playedAt DESC
-    """)
-    List<ListeningHistory> findRecentHistoryWithArtistTags(
-            @Param("userId") Long userId,
-            Pageable pageable
-    );*/
 
     @Query("""
     SELECT h.id

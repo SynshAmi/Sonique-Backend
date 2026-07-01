@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.synshami.sonique.config.SpotifyProperties;
-import com.synshami.sonique.dto.SpotifyTokenResponse;
+import com.synshami.sonique.dto.spotify.SpotifyTokenResponse;
 import com.synshami.sonique.enums.SpotifyConnectionStatus;
 import com.synshami.sonique.exception.AuthenticationException;
 import com.synshami.sonique.exception.ResourceNotFoundException;
@@ -19,7 +19,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import com.synshami.sonique.dto.SpotifyUserProfileResponse;
+import com.synshami.sonique.dto.spotify.SpotifyUserProfileResponse;
 import com.synshami.sonique.entity.*;
 import com.synshami.sonique.exception.DuplicateResourceException;
 
@@ -27,9 +27,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.web.client.RestClientException;
 

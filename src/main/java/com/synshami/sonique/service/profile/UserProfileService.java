@@ -1,6 +1,6 @@
 package com.synshami.sonique.service.profile;
 
-import com.synshami.sonique.dto.UserProfileResponse;
+import com.synshami.sonique.dto.profile.UserProfileResponse;
 import com.synshami.sonique.entity.UserProfile;
 import com.synshami.sonique.exception.ResourceNotFoundException;
 import com.synshami.sonique.repository.UserProfileRepository;

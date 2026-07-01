@@ -1,6 +1,9 @@
 package com.synshami.sonique.controller;
 
-import com.synshami.sonique.dto.*;
+import com.synshami.sonique.dto.profile.TopArtist;
+import com.synshami.sonique.dto.profile.TopSong;
+import com.synshami.sonique.dto.profile.UserStats;
+import com.synshami.sonique.dto.spotify.RecentTrack;
 import com.synshami.sonique.service.ListeningHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

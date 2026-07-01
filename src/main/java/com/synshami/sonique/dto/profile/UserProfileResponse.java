@@ -1,4 +1,4 @@
-package com.synshami.sonique.dto;
+package com.synshami.sonique.dto.profile;
 
 import com.synshami.sonique.enums.TimeWindow;
 import lombok.AllArgsConstructor;

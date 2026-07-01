@@ -1,6 +1,6 @@
 package com.synshami.sonique.service.profile;
 
-import com.synshami.sonique.dto.TasteEngineResponse;
+import com.synshami.sonique.dto.profile.TasteEngineResponse;
 import com.synshami.sonique.entity.Artist;
 import com.synshami.sonique.entity.ListeningHistory;
 import com.synshami.sonique.entity.Song;

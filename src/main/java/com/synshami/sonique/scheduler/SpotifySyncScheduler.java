@@ -1,6 +1,6 @@
 package com.synshami.sonique.scheduler;
 
-import com.synshami.sonique.dto.SpotifyTokenResponse;
+import com.synshami.sonique.dto.spotify.SpotifyTokenResponse;
 import com.synshami.sonique.entity.SpotifyToken;
 import com.synshami.sonique.entity.User;
 import com.synshami.sonique.enums.SpotifyConnectionStatus;
