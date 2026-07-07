@@ -1,0 +1,228 @@
+{
+  "genres": [
+    {
+      "name": "Hip Hop",
+      "children": [
+        { "name": "Global Hip Hop" },
+        { "name": "Desi Hip Hop" },
+        { "name": "Boom Bap" },
+        { "name": "Conscious Hip Hop" },
+        { "name": "Trap" },
+        { "name": "Drill" },
+        { "name": "Cloud Rap" },
+        { "name": "Alternative Hip Hop" },
+        { "name": "Jazz Rap" },
+        { "name": "Gangsta Rap" },
+        { "name": "Phonk" }
+      ]
+    },
+    {
+      "name": "Rock",
+      "children": [
+        { "name": "Alternative Rock" },
+        { "name": "Indie Rock" },
+        { "name": "Classic Rock" },
+        { "name": "Hard Rock" },
+        { "name": "Progressive Rock" },
+        { "name": "Psychedelic Rock" },
+        { "name": "Garage Rock" },
+        { "name": "Punk Rock" },
+        { "name": "Post-Punk" },
+        { "name": "Shoegaze" },
+        { "name": "Post-Rock" },
+        { "name": "Grunge" },
+        { "name": "Math Rock" }
+      ]
+    },
+    {
+      "name": "Metal",
+      "children": [
+        { "name": "Heavy Metal" },
+        { "name": "Thrash Metal" },
+        { "name": "Death Metal" },
+        { "name": "Black Metal" },
+        { "name": "Doom Metal" },
+        { "name": "Progressive Metal" },
+        { "name": "Metalcore" },
+        { "name": "Deathcore" },
+        { "name": "Nu Metal" }
+      ]
+    },
+    {
+      "name": "Electronic",
+      "children": [
+        { "name": "House" },
+        { "name": "Deep House" },
+        { "name": "Techno" },
+        { "name": "Trance" },
+        { "name": "Drum and Bass" },
+        { "name": "Jungle" },
+        { "name": "Breakbeat" },
+        { "name": "Garage" },
+        { "name": "Dubstep" },
+        { "name": "IDM" },
+        { "name": "Synthwave" },
+        { "name": "Hardstyle" }
+      ]
+    },
+    {
+      "name": "Pop",
+      "children": [
+        { "name": "Synthpop" },
+        { "name": "Art Pop" },
+        { "name": "Indie Pop" },
+        { "name": "Dream Pop" },
+        { "name": "Hyperpop" },
+        { "name": "K-Pop" },
+        { "name": "J-Pop" },
+        { "name": "C-Pop" }
+      ]
+    },
+    {
+      "name": "R&B",
+      "children": [
+        { "name": "Contemporary R&B" },
+        { "name": "Alternative R&B" },
+        { "name": "Neo Soul" }
+      ]
+    },
+    {
+      "name": "Soul",
+      "children": [
+        { "name": "Classic Soul" },
+        { "name": "Funk" },
+        { "name": "Motown" }
+      ]
+    },
+    {
+      "name": "Jazz",
+      "children": [
+        { "name": "Bebop" },
+        { "name": "Cool Jazz" },
+        { "name": "Free Jazz" },
+        { "name": "Jazz Fusion" },
+        { "name": "Smooth Jazz" },
+        { "name": "Vocal Jazz" }
+      ]
+    },
+    {
+      "name": "Blues",
+      "children": [
+        { "name": "Delta Blues" },
+        { "name": "Chicago Blues" },
+        { "name": "Electric Blues" }
+      ]
+    },
+    {
+      "name": "Country",
+      "children": [
+        { "name": "Alt-Country" },
+        { "name": "Outlaw Country" },
+        { "name": "Bluegrass" }
+      ]
+    },
+    {
+      "name": "Folk",
+      "children": [
+        { "name": "Americana" },
+        { "name": "Celtic Folk" },
+        { "name": "Indian Folk" }
+      ]
+    },
+    {
+      "name": "Classical",
+      "children": [
+        { "name": "Western Classical" },
+        { "name": "Hindustani Classical" },
+        { "name": "Carnatic Classical" },
+        { "name": "Contemporary Classical" }
+      ]
+    },
+    {
+      "name": "South Asian",
+      "children": [
+        { "name": "Bollywood" },
+        { "name": "Kollywood" },
+        { "name": "Tollywood" },
+        { "name": "Indipop" },
+        { "name": "Ghazal" },
+        { "name": "Qawwali" },
+        { "name": "Bhangra" },
+        { "name": "Sufi" },
+        { "name": "Baul" }
+      ]
+    },
+    {
+      "name": "Latin",
+      "children": [
+        { "name": "Reggaeton" },
+        { "name": "Latin Trap" },
+        { "name": "Salsa" },
+        { "name": "Bachata" },
+        { "name": "Cumbia" },
+        { "name": "Bossa Nova" },
+        { "name": "Mariachi" },
+        { "name": "Merengue" }
+      ]
+    },
+    {
+      "name": "African",
+      "children": [
+        { "name": "Afrobeats" },
+        { "name": "Amapiano" },
+        { "name": "Highlife" },
+        { "name": "Soukous" },
+        { "name": "Gqom" },
+        { "name": "Afro-House" }
+      ]
+    },
+    {
+      "name": "Caribbean",
+      "children": [
+        { "name": "Reggae" },
+        { "name": "Dancehall" },
+        { "name": "Ska" },
+        { "name": "Dub" },
+        { "name": "Soca" },
+        { "name": "Calypso" }
+      ]
+    },
+    {
+      "name": "Middle Eastern",
+      "children": [
+        { "name": "Rai" },
+        { "name": "Shaabi" },
+        { "name": "Tarab" },
+        { "name": "Khaliji" }
+      ]
+    },
+    {
+      "name": "Soundtrack",
+      "children": [
+        { "name": "Film Score" },
+        { "name": "Anime Soundtrack" },
+        { "name": "Video Game Music" },
+        { "name": "Musical Theatre" }
+      ]
+    }
+  ],
+  "musicalTraits": [
+    "Acoustic",
+    "Ambient",
+    "Atmospheric",
+    "Cinematic",
+    "Experimental",
+    "Lo-Fi",
+    "Minimalist",
+    "Orchestral",
+    "Psychedelic",
+    "Sample-Based"
+  ],
+  "vocalCharacteristics": [
+    "Male Vocalist",
+    "Female Vocalist",
+    "Mixed Vocalists",
+    "Choir Vocals",
+    "Instrumental"
+  ]
+}

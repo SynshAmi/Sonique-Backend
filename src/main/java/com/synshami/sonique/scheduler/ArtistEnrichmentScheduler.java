@@ -16,7 +16,7 @@ public class ArtistEnrichmentScheduler {
     private static final Logger logger =
             LoggerFactory.getLogger(ArtistEnrichmentScheduler.class);
 
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedRate = 900000)
     public void enrichArtists() {
 
         logger.info("[ArtistEnrichmentScheduler] Scheduler triggered");

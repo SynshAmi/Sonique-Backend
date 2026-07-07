@@ -1,6 +1,7 @@
 package com.synshami.sonique.service.profile;
 
 import com.synshami.sonique.entity.*;
+import com.synshami.sonique.service.normalization.TagNormalizationService;
 import com.synshami.sonique.exception.ResourceNotFoundException;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
 import com.synshami.sonique.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Optional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,7 @@ public class UserTagPreferenceEngine {
     private final UserTagPreferenceRepository userTagPreferenceRepository;
     private final UserRepository userRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final TagNormalizationService tagNormalizationService;
 
     @Transactional
     public void generateUserPreferences(Long userId) {
@@ -42,18 +45,25 @@ public class UserTagPreferenceEngine {
                 listeningHistoryRepository.findHistoryWithArtistTagsByIds(ids);
 
         Map<Artist, Integer> artistCounts = listeningAnalysisService.getArtistFrequencyMap(history);
-        Map<Tag, Double> tagWeights = new HashMap<>();
+        Map<CanonicalTag, Double> tagWeights = new HashMap<>();
 
         for (Map.Entry<Artist, Integer> entry : artistCounts.entrySet()) {
             Artist artist = entry.getKey();
             int plays = entry.getValue();
 
-            for (ArtistTag tag : artist.getArtistTags()) {
-                double contribution = plays * tag.getWeight();
+            for (ArtistTag artistTag : artist.getArtistTags()) {
+                double contribution = plays * (double) artistTag.getWeight();
+
+                Optional<CanonicalTag> maybeCanonical = tagNormalizationService.normalize(artistTag.getTag());
+                if (maybeCanonical.isEmpty()) {
+                    continue;
+                }
+
+                CanonicalTag canonical = maybeCanonical.get();
 
                 tagWeights.put(
-                        tag.getTag(),
-                        tagWeights.getOrDefault(tag.getTag(), 0.0) + contribution
+                        canonical,
+                        tagWeights.getOrDefault(canonical, 0.0) + contribution
                 );
             }
         }
@@ -70,10 +80,10 @@ public class UserTagPreferenceEngine {
             return;
         }
 
-        Map<Tag, Double> normalizedTagWeights = new HashMap<>();
+        Map<CanonicalTag, Double> normalizedTagWeights = new HashMap<>();
 
-        for (Map.Entry<Tag, Double> entry : tagWeights.entrySet()) {
-            Tag tag= entry.getKey();
+        for (Map.Entry<CanonicalTag, Double> entry : tagWeights.entrySet()) {
+            CanonicalTag tag= entry.getKey();
             Double normalizedWeight = entry.getValue() / maxWeight;
 
             normalizedTagWeights.put(
@@ -89,7 +99,7 @@ public class UserTagPreferenceEngine {
 
         List<UserTagPreference> list = new ArrayList<>();
 
-        for (Map.Entry<Tag, Double> entry : normalizedTagWeights.entrySet()) {
+        for (Map.Entry<CanonicalTag, Double> entry : normalizedTagWeights.entrySet()) {
             list.add(
                     UserTagPreference.builder()
                             .user(user)
@@ -101,7 +111,7 @@ public class UserTagPreferenceEngine {
 
         jdbcTemplate.batchUpdate(
                 """
-                INSERT INTO user_tag_preferences (user_id, tag_id, weight)
+                INSERT INTO user_tag_preferences (user_id, canonical_tag_id, weight)
                 VALUES (?, ?, ?)
                 """,
                 list,

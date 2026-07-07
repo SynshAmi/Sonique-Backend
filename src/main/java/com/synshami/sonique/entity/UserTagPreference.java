@@ -12,7 +12,7 @@ import lombok.*;
 @Table(
         name = "user_tag_preferences",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"user_id", "tag_id"})
+                @UniqueConstraint(columnNames = {"user_id", "canonical_tag_id"})
         }
 )
 public class UserTagPreference {
@@ -26,8 +26,8 @@ public class UserTagPreference {
     private User user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @JoinColumn(name = "canonical_tag_id")
+    private CanonicalTag tag;
 
     @Column(nullable = false)
     private Double weight;
