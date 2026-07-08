@@ -38,6 +38,8 @@ public class CanonicalTagSeeder implements CommandLineRunner {
             saveNode(genre, null, CanonicalTagCategory.GENRE);
         }
 
+        System.out.println("Finished genres");
+
         for (String trait : ontology.getMusicalTraits()) {
             canonicalTagRepository.save(
                     CanonicalTag.builder()
@@ -47,6 +49,8 @@ public class CanonicalTagSeeder implements CommandLineRunner {
             );
         }
 
+        System.out.println("Musical traits");
+
         for (String characteristic : ontology.getVocalCharacteristics()) {
             canonicalTagRepository.save(
                     CanonicalTag.builder()
@@ -55,6 +59,19 @@ public class CanonicalTagSeeder implements CommandLineRunner {
                             .build()
             );
         }
+
+        System.out.println("Finished vocal characteristics");
+
+        for (String ignored : ontology.getIgnored()) {
+            canonicalTagRepository.save(
+                    CanonicalTag.builder()
+                            .name(ignored)
+                            .category(CanonicalTagCategory.IGNORE)
+                            .build()
+            );
+        }
+
+        System.out.println("Finished ignored tags");
 
     }
 

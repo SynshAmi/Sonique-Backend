@@ -224,5 +224,8 @@
     "Mixed Vocalists",
     "Choir Vocals",
     "Instrumental"
+  ],
+  "ignored": [
+    "Ignore"
   ]
 }

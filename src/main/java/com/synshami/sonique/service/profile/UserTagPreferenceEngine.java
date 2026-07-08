@@ -1,6 +1,7 @@
 package com.synshami.sonique.service.profile;
 
 import com.synshami.sonique.entity.*;
+import com.synshami.sonique.enums.CanonicalTagCategory;
 import com.synshami.sonique.service.normalization.TagNormalizationService;
 import com.synshami.sonique.exception.ResourceNotFoundException;
 import com.synshami.sonique.repository.ListeningHistoryRepository;
@@ -55,11 +56,16 @@ public class UserTagPreferenceEngine {
                 double contribution = plays * (double) artistTag.getWeight();
 
                 Optional<CanonicalTag> maybeCanonical = tagNormalizationService.normalize(artistTag.getTag());
+
                 if (maybeCanonical.isEmpty()) {
                     continue;
                 }
 
                 CanonicalTag canonical = maybeCanonical.get();
+
+                if (canonical.getCategory() == CanonicalTagCategory.IGNORE) {
+                    continue;
+                }
 
                 tagWeights.put(
                         canonical,

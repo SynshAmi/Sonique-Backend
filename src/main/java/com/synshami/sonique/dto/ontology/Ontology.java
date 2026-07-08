@@ -18,4 +18,6 @@ public class Ontology {
     private List<String> musicalTraits;
 
     private List<String> vocalCharacteristics;
+
+    private List<String> ignored;
 }
