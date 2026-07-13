@@ -4,7 +4,7 @@ import com.synshami.sonique.dto.gemini.Content;
 import com.synshami.sonique.dto.gemini.GenerateContentRequest;
 import com.synshami.sonique.dto.gemini.GenerateContentResponse;
 import com.synshami.sonique.dto.gemini.Part;
-import com.synshami.sonique.service.GeminiService;
+import com.synshami.sonique.service.gemini.GeminiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

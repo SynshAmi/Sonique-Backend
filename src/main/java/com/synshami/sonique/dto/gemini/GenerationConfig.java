@@ -5,16 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class GenerateContentRequest {
+@AllArgsConstructor
+public class GenerationConfig {
 
-    private List<Content> contents;
-
-    private GenerationConfig generationConfig;
+    private String responseMimeType;
 
 }

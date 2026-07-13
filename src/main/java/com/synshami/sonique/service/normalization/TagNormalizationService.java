@@ -21,7 +21,7 @@ public class TagNormalizationService {
     private final Map<Long, CanonicalTag> cache = new HashMap<>();
 
     @PostConstruct
-    private void loadCache() {
+    public void reloadCache() {
 
         cache.clear();
         List<TagMapping> mappings = tagMappingRepository.findAllWithTags();

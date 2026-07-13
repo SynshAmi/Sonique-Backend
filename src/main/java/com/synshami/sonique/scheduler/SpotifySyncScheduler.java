@@ -26,7 +26,7 @@ public class SpotifySyncScheduler {
     private final IdentityGenerationService identityGenerationService;
     private static final Logger logger = LoggerFactory.getLogger(SpotifySyncScheduler.class);
 
-    @Scheduled(fixedRate = 900000)
+    @Scheduled(fixedDelay = 900000)
     public void syncUsers() {
         logger.info("[SpotifySyncScheduler] Scheduler triggered");
 

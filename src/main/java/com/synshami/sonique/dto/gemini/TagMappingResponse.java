@@ -5,16 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenerateContentRequest {
-
-    private List<Content> contents;
-
-    private GenerationConfig generationConfig;
-
+public class TagMappingResponse {
+    private String rawTag;
+    private String canonicalTag;
 }

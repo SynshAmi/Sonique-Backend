@@ -1,4 +1,4 @@
-package com.synshami.sonique.service;
+package com.synshami.sonique.service.gemini;
 
 import com.synshami.sonique.config.GeminiProperties;
 import com.synshami.sonique.dto.gemini.GenerateContentRequest;
