@@ -9,7 +9,6 @@ import com.synshami.sonique.enums.TimeWindow;
 import com.synshami.sonique.exception.ResourceNotFoundException;
 import com.synshami.sonique.repository.UserProfileRepository;
 import com.synshami.sonique.repository.UserRepository;
-import com.synshami.sonique.service.ListeningHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +45,9 @@ public class UserProfileGenerator {
 
         profile.setTopArtistName(taste.getTopArtistName());
         profile.setTopSongName(taste.getTopSongName());
+        profile.setTopGenres(taste.getTopGenres());
+        profile.setTopMusicalTraits(taste.getTopMusicalTraits());
+        profile.setTopVocalCharacteristic(taste.getTopVocalCharacteristic());
 
         profile.setLastUpdated(java.time.LocalDateTime.now());
 

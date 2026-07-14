@@ -51,6 +51,9 @@ public class UserProfile {
 
     private String topArtistName;
     private String topSongName;
+    private String topGenres;
+    private String topMusicalTraits;
+    private String topVocalCharacteristic;
 
     private LocalDateTime lastUpdated;
 }

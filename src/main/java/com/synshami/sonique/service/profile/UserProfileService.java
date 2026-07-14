@@ -32,6 +32,9 @@ public class UserProfileService {
 
                 .topArtistName(profile.getTopArtistName())
                 .topSongName(profile.getTopSongName())
+                .topGenres(profile.getTopGenres())
+                .topMusicalTraits(profile.getTopMusicalTraits())
+                .topVocalCharacteristic(profile.getTopVocalCharacteristic())
 
                 .lastUpdated(profile.getLastUpdated())
                 .build();

@@ -4,7 +4,7 @@ import com.synshami.sonique.dto.profile.TopArtist;
 import com.synshami.sonique.dto.profile.TopSong;
 import com.synshami.sonique.dto.profile.UserStats;
 import com.synshami.sonique.dto.spotify.RecentTrack;
-import com.synshami.sonique.service.ListeningHistoryService;
+import com.synshami.sonique.service.profile.ListeningHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;

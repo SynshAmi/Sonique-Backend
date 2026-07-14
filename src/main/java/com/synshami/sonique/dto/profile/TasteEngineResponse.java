@@ -14,4 +14,8 @@ public class TasteEngineResponse {
 
     private String topSongName;
     private int topSongPlayCount;
+
+    private String topGenres;
+    private String topMusicalTraits;
+    private String topVocalCharacteristic;
 }

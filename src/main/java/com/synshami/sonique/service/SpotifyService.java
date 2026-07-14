@@ -294,7 +294,7 @@ public class SpotifyService {
             String artistId = track.get("artists").get(0).get("id").asText();
             String albumName = track.get("album").get("name").asText();
 
-            LocalDate releaseDate = LocalDate.parse(track.get("album").get("release_date").asText());
+            LocalDate releaseDate = parseSpotifyReleaseDate(track.get("album"));
 
             Integer durationMs = track.get("duration_ms").asInt();
 
@@ -317,6 +317,28 @@ public class SpotifyService {
             );
 
             saveListeningHistory(user, song, playedAt);
+        }
+    }
+
+    private LocalDate parseSpotifyReleaseDate(JsonNode album) {
+
+        String releaseDate = album.get("release_date").asText();
+        String precision = album.get("release_date_precision").asText();
+
+        switch (precision) {
+            case "day":
+                return LocalDate.parse(releaseDate);
+
+            case "month":
+                return LocalDate.parse(releaseDate + "-01");
+
+            case "year":
+                return LocalDate.parse(releaseDate + "-01-01");
+
+            default:
+                throw new IllegalArgumentException(
+                        "Unknown Spotify release date precision: " + precision
+                );
         }
     }
 

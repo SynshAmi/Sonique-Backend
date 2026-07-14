@@ -1,4 +1,4 @@
-package com.synshami.sonique.service;
+package com.synshami.sonique.service.profile;
 
 import com.synshami.sonique.dto.profile.TopArtist;
 import com.synshami.sonique.dto.profile.TopSong;

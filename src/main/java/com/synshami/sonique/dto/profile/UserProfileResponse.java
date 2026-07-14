@@ -33,6 +33,9 @@ public class UserProfileResponse {
     // Current Personality - Taste
     private String topArtistName;
     private String topSongName;
+    private String topGenres;
+    private String topMusicalTraits;
+    private String topVocalCharacteristic;
 
     // Metadata
     private LocalDateTime lastUpdated;
