@@ -5,6 +5,12 @@
       "children": [
         { "name": "Global Hip Hop" },
         { "name": "Desi Hip Hop" },
+
+        { "name": "Punjabi Hip Hop" },
+        { "name": "Haryanvi Hip Hop" },
+        { "name": "Tamil Hip Hop" },
+        { "name": "Telugu Hip Hop" },
+
         { "name": "Boom Bap" },
         { "name": "Conscious Hip Hop" },
         { "name": "Trap" },
@@ -51,6 +57,8 @@
     {
       "name": "Electronic",
       "children": [
+        { "name": "EDM" },
+
         { "name": "House" },
         { "name": "Deep House" },
         { "name": "Techno" },
@@ -73,9 +81,16 @@
         { "name": "Indie Pop" },
         { "name": "Dream Pop" },
         { "name": "Hyperpop" },
+
         { "name": "K-Pop" },
         { "name": "J-Pop" },
-        { "name": "C-Pop" }
+        { "name": "C-Pop" },
+
+        { "name": "Punjabi Pop" },
+        { "name": "Haryanvi Pop" },
+        { "name": "Tamil Pop" },
+        { "name": "Telugu Pop" },
+        { "name": "Malayalam Pop" }
       ]
     },
     {
@@ -149,7 +164,8 @@
         { "name": "Qawwali" },
         { "name": "Bhangra" },
         { "name": "Sufi" },
-        { "name": "Baul" }
+        { "name": "Baul" },
+        { "name": "Devotional" }
       ]
     },
     {

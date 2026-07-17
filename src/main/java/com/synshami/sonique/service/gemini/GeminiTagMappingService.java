@@ -30,7 +30,6 @@ public class GeminiTagMappingService {
 
     private final GeminiService geminiService;
     private final TagRepository tagRepository;
-    private final TagMappingRepository tagMappingRepository;
     private final CanonicalTagRepository canonicalTagRepository;
     private final TagNormalizationService tagNormalizationService;
     private final ObjectMapper objectMapper;
@@ -174,8 +173,8 @@ public class GeminiTagMappingService {
             2. Never invent new canonical tags.
             3. Every raw tag MUST map to exactly one canonical tag.
             4. Do NOT omit any input tag.
-            5. Choose the closest semantic match.
-            6. If a raw tag represents a broad musical category and there is no evidence that it belongs to a more specific subgenre, map it to the parent genre instead of guessing a child genre.
+            5. Choose the single closest semantic match based on musical meaning rather than literal wording.
+            6. If a raw tag represents a broad musical category and there is no evidence that it belongs to a more specific canonical tag, map it to the closest appropriate parent genre instead of guessing a more specific child.
             7. If a tag is not useful for describing a user's musical taste, map it to "Ignore".
 
             Tags that should generally map to "Ignore" include:
@@ -192,20 +191,91 @@ public class GeminiTagMappingService {
             - Playlist labels
             - Personal labels
             - Meme or joke tags
+            - Cities
+            - Record labels
+
+            The following examples illustrate the desired mapping behavior. Apply the same reasoning consistently to all input tags.
 
             ======================================
             EXAMPLES
             ======================================
 
-            hip hop            -> Hip Hop
-            rap                -> Hip Hop
-            conscious rap      -> Conscious Hip Hop
-            trap               -> Trap
-            female singer      -> Female Vocalist
-            ambient            -> Ambient
-            usa                -> Ignore
-            favorite           -> Ignore
-            seen live          -> Ignore
+            Genres
+            -------
+
+            hip hop                -> Hip Hop
+            rap                    -> Hip Hop
+            conscious rap          -> Conscious Hip Hop
+            trap                   -> Trap
+            phonk                  -> Phonk
+            indie rock             -> Indie Rock
+            deathcore              -> Deathcore
+            deep house             -> Deep House
+            edm                    -> EDM
+            synthpop               -> Synthpop
+            neo soul               -> Neo Soul
+
+            South Asian
+            -----------
+
+            desi hip hop           -> Desi Hip Hop
+            punjabi pop            -> Punjabi Pop
+            punjabi songs          -> Punjabi Pop
+            punjabi rap            -> Punjabi Hip Hop
+            punjabi hip hop        -> Punjabi Hip Hop
+
+            haryanvi pop           -> Haryanvi Pop
+            haryanvi rap           -> Haryanvi Hip Hop
+
+            tamil pop              -> Tamil Pop
+            tamil songs            -> Tamil Pop
+            tamil rap              -> Tamil Hip Hop
+
+            telugu pop             -> Telugu Pop
+            telugu songs           -> Telugu Pop
+            telugu rap             -> Telugu Hip Hop
+
+            malayalam pop          -> Malayalam Pop
+
+            bollywood              -> Bollywood
+            kollywood              -> Kollywood
+            tollywood              -> Tollywood
+            indipop                -> Indipop
+
+            ghazal                 -> Ghazal
+            qawwali                -> Qawwali
+            sufi                   -> Sufi
+            bhangra                -> Bhangra
+
+            bhajan                 -> Devotional
+            devotional             -> Devotional
+
+            Musical Traits
+            --------------
+
+            ambient                -> Ambient
+            acoustic               -> Acoustic
+            orchestral             -> Orchestral
+            cinematic              -> Cinematic
+            lo-fi                  -> Lo-Fi
+            instrumental           -> Instrumental
+            female singer          -> Female Vocalist
+            male singer            -> Male Vocalist
+            choir                  -> Choir Vocals
+
+            Ignore
+            ------
+
+            usa                    -> Ignore
+            english                -> Ignore
+            hindi                  -> Ignore
+            2024                   -> Ignore
+            80s                    -> Ignore
+            favorite               -> Ignore
+            masterpiece            -> Ignore
+            underrated             -> Ignore
+            seen live              -> Ignore
+            concert                -> Ignore
 
             ======================================
             RESPONSE FORMAT
